@@ -1,5 +1,6 @@
 ﻿using snsrCollector.core;
 using snsrCollector.db;
+using snsrCollector.dbTables;
 using snsrCollector.utils;
 using System;
 using System.Collections.Generic;

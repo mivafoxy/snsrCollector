@@ -1,4 +1,5 @@
-﻿using System;
+﻿using snsrCollector.dbTables;
+using System;
 using System.Collections.Generic;
 using System.Text;
 

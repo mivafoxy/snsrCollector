@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using snsrCollector.communication;
+using snsrCollector.dbTables;
 using snsrCollector.modules;
 using snsrCollector.modules.sensoric;
 using System;

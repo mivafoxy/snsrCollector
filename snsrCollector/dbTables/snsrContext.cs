@@ -2,8 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using snsrCollector.core;
+using snsrCollector.utils;
 
-namespace snsrCollector
+namespace snsrCollector.dbTables
 {
     public partial class snsrContext : DbContext
     {
@@ -38,14 +39,7 @@ namespace snsrCollector
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                var config = ApplicationCore.GetInstance().GetAppConfig();
-
-                var dbHost = config.GetKeyValueOr("DbHost", "localhost");
-                var dbName = config.GetKeyValueOr("DbName", "snsr");
-                var dbUser = config.GetKeyValueOr("DbUser", "postgres");
-                var dbPassword = config.GetKeyValueOr("DbPassword", "masterkey");
-
-                optionsBuilder.UseNpgsql($"Host={dbHost};Database={dbName};Username={dbUser};Password={dbPassword}");
+                optionsBuilder.UseNpgsql($"Host=localhost;Database=snsr2;Username=postgres;Password=masterkey");
             }
         }
 

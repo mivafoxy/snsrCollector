@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace snsrCollector
+namespace snsrCollector.dbTables
 {
     public partial class ModelLogicalType
     {
