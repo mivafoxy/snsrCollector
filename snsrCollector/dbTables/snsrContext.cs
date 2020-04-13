@@ -30,6 +30,7 @@ namespace snsrCollector
         public virtual DbSet<Network> Network { get; set; }
         public virtual DbSet<ObjectDict> ObjectDict { get; set; }
         public virtual DbSet<ObjectTypeDict> ObjectTypeDict { get; set; }
+        public virtual DbSet<ProfileNetwork> ProfileNetwork { get; set; }
         public virtual DbSet<ProfileType> ProfileType { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -50,6 +51,8 @@ namespace snsrCollector
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasPostgresExtension("uuid-ossp");
+
             modelBuilder.Entity<Device>(entity =>
             {
                 entity.HasKey(e => e.IdKey)
@@ -490,6 +493,38 @@ namespace snsrCollector
                     .IsRequired()
                     .HasColumnName("Object_type_name")
                     .HasColumnType("character varying");
+            });
+
+            modelBuilder.Entity<ProfileNetwork>(entity =>
+            {
+                entity.HasKey(e => e.IdKey)
+                    .HasName("primary");
+
+                entity.ToTable("profile_network");
+
+                entity.Property(e => e.IdKey)
+                    .HasColumnName("ID_Key")
+                    .HasColumnType("character varying");
+
+                entity.Property(e => e.LeftProfileId)
+                    .HasColumnName("Left_profile_id")
+                    .HasColumnType("character varying");
+
+                entity.Property(e => e.RightProfileId)
+                    .IsRequired()
+                    .HasColumnName("Right_profile_id")
+                    .HasColumnType("character varying");
+
+                entity.HasOne(d => d.LeftProfile)
+                    .WithMany(p => p.ProfileNetworkLeftProfile)
+                    .HasForeignKey(d => d.LeftProfileId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("left_profile");
+
+                entity.HasOne(d => d.RightProfile)
+                    .WithMany(p => p.ProfileNetworkRightProfile)
+                    .HasForeignKey(d => d.RightProfileId)
+                    .HasConstraintName("right_profile");
             });
 
             modelBuilder.Entity<ProfileType>(entity =>
