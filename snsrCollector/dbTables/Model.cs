@@ -13,6 +13,7 @@ namespace snsrCollector.dbTables
 
         public int ModelTypeFkey { get; set; }
         public string IdKey { get; set; }
+        public string ModelName { get; set; }
 
         public virtual ModelType ModelTypeFkeyNavigation { get; set; }
         public virtual ICollection<Device> Device { get; set; }
