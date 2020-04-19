@@ -159,9 +159,9 @@ namespace snsrCollector.db
                     var childs =
                         db.Device.Where(
                             device =>
-                                device.NetworkRightDevice.Any(
+                                device.NetworkChildDevice.Any(
                                     network =>
-                                        network.LeftDeviceId == rootDevice.IdKey)).
+                                        network.ParentDeviceId == rootDevice.IdKey)).
                         Select(
                             child => child).
                         ToList();
