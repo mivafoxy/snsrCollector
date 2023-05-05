@@ -110,7 +110,9 @@ namespace snsrCollector.modules.sensoric
 
                 ApplicationCore.GetInstance().GetLogger().LogDebug($"В пакете найдено значение: {entry.Key}:{sensorValue}");
 
-                objectValues.Add(
+                if (logicalId != null)
+                {
+                    objectValues.Add(
                     new ModuleObjectValue()
                     {
                         ModuleValue = sensorValue,
@@ -118,6 +120,12 @@ namespace snsrCollector.modules.sensoric
                         ReceivedTime = DateTime.Now,
                         LogicalDeviceId = logicalId
                     });
+                }
+                else
+                {
+                    ApplicationCore.GetInstance().GetLogger().LogDebug("В модели не найдено объекта для записи значения.");
+                }
+                
             }
 
             return objectValues;
@@ -159,15 +167,18 @@ namespace snsrCollector.modules.sensoric
         
         private string FindLogicalIdForRequiredObjectId(int objectId)
         {
-            return 
-                logicalDevices.Where(
-                    ld => 
-                        ld.DeviceObject.Any(
-                            devObj => 
-                                devObj.ObjectDictId == objectId)).
-                    Select(
-                        ldResult => ldResult.IdKey).
-                    FirstOrDefault();
+            // TODO: - сделать объединение идентификатора логического прибора и объектов, ему принадлежащих
+            // еще во время инициализации
+            foreach (var logicalDevice in logicalDevices)
+            {
+                var objectTypes = DbService.GetObjectTypesFor(logicalDevice.IdKey);
+                if (objectTypes.Contains(objectId))
+                {
+                    return logicalDevice.IdKey;
+                }
+            }
+
+            return null;
         }
     }
 }

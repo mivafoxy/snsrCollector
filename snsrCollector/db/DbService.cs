@@ -24,11 +24,13 @@ namespace snsrCollector.db
             {
                 foreach (var objectValue in moduleValues)
                 {
+                    int objectDictId = db.ObjectDict.Where(w => w.ObjectType == objectValue.ObjectId).Select(s => s.IdKey).FirstOrDefault();
+
                     string deviceObjectKey =
                         db.DeviceObject.Where(
                             dob => 
                                 dob.DeviceLdFkey == objectValue.LogicalDeviceId && 
-                                dob.ObjectDictId == objectValue.ObjectId).
+                                dob.ObjectDictId == objectDictId).
                             Select(
                                 dobResult => 
                                     dobResult.IdKey).
@@ -45,6 +47,23 @@ namespace snsrCollector.db
                 }
 
                 db.SaveChanges();
+            }
+        }
+
+        public static List<int> GetObjectTypesFor(string logicalDeviceId)
+        {
+            using (var db = new snsrContext())
+            {
+                var deviceObjects =
+                    db.DeviceObject
+                    .Where(
+                        dobj => dobj.DeviceLdFkey == logicalDeviceId)
+                    .Select(
+                        s => s.ObjectDictId);
+                
+                return db.ObjectDict
+                    .Where(w => deviceObjects.Contains(w.IdKey))
+                    .Select(s => s.ObjectType).ToList();
             }
         }
 
