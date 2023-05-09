@@ -7,8 +7,8 @@ namespace snsrCollector.db
     public static class ObjectIdConsts
     {
         public const int IdTemperature = 100000;    // Температура (C)
-        public const int IdHumidity = 100001;       // Влажность
-        public const int IdRain = 100002;           // Датчик дождя
+        public const int IdHumidity = 100001;       // Холодная вода
+        public const int IdRain = 100002;           // Горячая вода
         public const int IdWindSpeed = 100003;      // Скорость ветра
         public const int IdIllumination = 100004;   // Освещение
         public const int IdPropane_2p = 100005;     // Пропан 2
